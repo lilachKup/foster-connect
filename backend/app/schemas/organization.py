@@ -14,7 +14,7 @@ class OrganizationBase(BaseModel):
     city: str
     street: str
     house_number: str
-    zip_code: str
+    zip_code: str | None = None
 
 
 class _RequireOneLink(BaseModel):
