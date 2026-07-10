@@ -115,11 +115,12 @@ export default function OrgRegister() {
               />
             </div>
             <div className="field">
-              <label>Phone</label>
+              <label>Phone *</label>
               <input
                 type="tel"
                 value={org.phone}
                 onChange={(e) => set("phone", e.target.value)}
+                required
               />
             </div>
             <div className="field">
@@ -193,12 +194,11 @@ export default function OrgRegister() {
               />
             </div>
             <div className="field">
-              <label>Zip code *</label>
+              <label>Zip code</label>
               <input
                 type="text"
                 value={org.zip_code}
                 onChange={(e) => set("zip_code", e.target.value)}
-                required
               />
             </div>
           </div>

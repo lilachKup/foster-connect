@@ -3,11 +3,9 @@ import client, { apiError } from "../api/client.js";
 
 const EMPTY_FILTERS = {
   city: "",
-  nearby_city: "",
   can_foster_dogs: false,
   can_foster_cats: false,
   max_dog_weight: "",
-  availability_status: "",
   emergency_foster_available: false,
   has_car: false,
   has_experience: false,
@@ -22,7 +20,9 @@ function FosterCard({ f }) {
   if (f.emergency_foster_available) tags.push("Emergency");
   if (f.previous_experience) tags.push("Experienced");
 
-  const location = f.city || "";
+  const location = [f.city, f.nearby_city && `(${f.nearby_city})`]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div className="card">
@@ -134,31 +134,19 @@ export default function OrgDashboard() {
                 />
               </div>
               <div className="field">
-                <label>Nearby city</label>
-                <input
-                  type="text"
-                  value={filters.nearby_city}
-                  onChange={(e) => set("nearby_city", e.target.value)}
-                />
-              </div>
-              <div className="field">
-                <label>Min. dog weight capacity (kg)</label>
-                <input
-                  type="number"
-                  min="0"
+                <label>Dog weight</label>
+                <select
                   value={filters.max_dog_weight}
                   onChange={(e) => set("max_dog_weight", e.target.value)}
-                />
-              </div>
-              <div className="field">
-                <label>Availability</label>
-                <select
-                  value={filters.availability_status}
-                  onChange={(e) => set("availability_status", e.target.value)}
                 >
                   <option value="">Any</option>
-                  <option value="available">Available</option>
-                  <option value="unavailable">Unavailable</option>
+                  <option value="5">Up to 5 kg</option>
+                  <option value="10">Up to 10 kg</option>
+                  <option value="15">Up to 15 kg</option>
+                  <option value="20">Up to 20 kg</option>
+                  <option value="25">Up to 25 kg</option>
+                  <option value="30">Up to 30 kg</option>
+                  <option value="31">Over 30 kg</option>
                 </select>
               </div>
             </div>

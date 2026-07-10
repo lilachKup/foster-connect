@@ -17,7 +17,7 @@ class Organization(Base):
 
     org_name: Mapped[str] = mapped_column(String(255), nullable=False)
     contact_person: Mapped[str] = mapped_column(String(255), nullable=False)
-    phone: Mapped[str | None] = mapped_column(String(50))
+    phone: Mapped[str] = mapped_column(String(50), nullable=False)
     email: Mapped[str | None] = mapped_column(String(255))
     website_url: Mapped[str | None] = mapped_column(String(255))
     instagram_url: Mapped[str | None] = mapped_column(String(255))
@@ -26,7 +26,7 @@ class Organization(Base):
     city: Mapped[str] = mapped_column(String(120), nullable=False, index=True)
     street: Mapped[str] = mapped_column(String(255), nullable=False)
     house_number: Mapped[str] = mapped_column(String(20), nullable=False)
-    zip_code: Mapped[str] = mapped_column(String(20), nullable=False)
+    zip_code: Mapped[str | None] = mapped_column(String(20))
 
     approval_status: Mapped[ApprovalStatus] = mapped_column(
         SAEnum(ApprovalStatus, name="approval_status"),

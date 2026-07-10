@@ -76,13 +76,11 @@ def delete_my_profile(
 @router.get("", response_model=list[FosterProfileRead])
 def search_fosters(
     city: str | None = Query(default=None),
-    nearby_city: str | None = Query(default=None),
     can_foster_dogs: bool | None = Query(default=None),
     can_foster_cats: bool | None = Query(default=None),
     max_dog_weight: int | None = Query(
         default=None, ge=0, description="Only fosters able to take a dog of at least this weight (kg)"
     ),
-    availability_status: AvailabilityStatus | None = Query(default=None),
     emergency_foster_available: bool | None = Query(default=None),
     has_car: bool | None = Query(default=None),
     has_experience: bool | None = Query(
@@ -91,14 +89,23 @@ def search_fosters(
     _user: User = Depends(require_approved_org_or_admin),
     db: Session = Depends(get_db),
 ):
+    # Only fosters currently eligible to appear in search: active profile,
+    # and marked available. (No user-facing availability filter for now —
+    # this is expected to be simplified further into profile_status later.)
     q = db.query(FosterProfile).filter(
-        FosterProfile.profile_status == ProfileStatus.active
+        FosterProfile.profile_status == ProfileStatus.active,
+        FosterProfile.availability_status == AvailabilityStatus.available,
     )
 
     if city:
-        q = q.filter(FosterProfile.city.ilike(f"%{city}%"))
-    if nearby_city:
-        q = q.filter(FosterProfile.nearby_city.ilike(f"%{nearby_city}%"))
+        # Match either the foster's own city or a nearby city they're also
+        # willing to serve.
+        q = q.filter(
+            or_(
+                FosterProfile.city.ilike(f"%{city}%"),
+                FosterProfile.nearby_city.ilike(f"%{city}%"),
+            )
+        )
     if can_foster_dogs is not None:
         q = q.filter(FosterProfile.can_foster_dogs == can_foster_dogs)
     if can_foster_cats is not None:
@@ -111,8 +118,6 @@ def search_fosters(
                 FosterProfile.max_dog_weight_kg >= max_dog_weight,
             )
         )
-    if availability_status is not None:
-        q = q.filter(FosterProfile.availability_status == availability_status)
     if emergency_foster_available is not None:
         q = q.filter(
             FosterProfile.emergency_foster_available == emergency_foster_available
