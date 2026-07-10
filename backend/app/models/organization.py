@@ -17,7 +17,7 @@ class Organization(Base):
 
     org_name: Mapped[str] = mapped_column(String(255), nullable=False)
     contact_person: Mapped[str] = mapped_column(String(255), nullable=False)
-    phone: Mapped[str | None] = mapped_column(String(50))
+    phone: Mapped[str] = mapped_column(String(50), nullable=False)
     email: Mapped[str | None] = mapped_column(String(255))
     website_url: Mapped[str | None] = mapped_column(String(255))
     instagram_url: Mapped[str | None] = mapped_column(String(255))

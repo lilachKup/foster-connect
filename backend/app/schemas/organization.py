@@ -6,7 +6,7 @@ from ..enums import ApprovalStatus
 class OrganizationBase(BaseModel):
     org_name: str
     contact_person: str
-    phone: str | None = None
+    phone: str
     email: EmailStr | None = None
     website_url: str | None = None
     instagram_url: str | None = None
