@@ -213,6 +213,13 @@ legend {
 .btn.danger {
   background: var(--danger);
 }
+.btn.warn {
+  background: var(--warn);
+  color: #fff;
+}
+.btn.warn:hover {
+  background: #a86f00;
+}
 .btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;

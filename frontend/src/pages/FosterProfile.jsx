@@ -12,17 +12,22 @@ export default function FosterProfile() {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [profile, setProfile] = useState({ ...EMPTY_FOSTER });
+  const [savedProfile, setSavedProfile] = useState({ ...EMPTY_FOSTER });
   const [status, setStatus] = useState("active");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
 
+  const isDirty = JSON.stringify(profile) !== JSON.stringify(savedProfile);
+
   useEffect(() => {
     client
       .get("/fosters/me")
       .then((res) => {
-        setProfile(fosterToForm(res.data));
+        const form = fosterToForm(res.data);
+        setProfile(form);
+        setSavedProfile(form);
         setStatus(res.data.profile_status);
       })
       .catch((err) => setError(apiError(err)))
@@ -40,7 +45,9 @@ export default function FosterProfile() {
     setBusy(true);
     try {
       const res = await client.put("/fosters/me", formToFoster(profile));
-      setProfile(fosterToForm(res.data));
+      const form = fosterToForm(res.data);
+      setProfile(form);
+      setSavedProfile(form);
       setStatus(res.data.profile_status);
       setMessage("Profile saved.");
     } catch (err) {
@@ -100,13 +107,13 @@ export default function FosterProfile() {
       <form onSubmit={handleSave}>
         <FosterFields values={profile} set={set} />
         <div className="actions-row">
-          <button className="btn" disabled={busy}>
+          <button className="btn" disabled={busy || !isDirty}>
             {busy ? "Saving…" : "Save changes"}
           </button>
           {status === "active" ? (
             <button
               type="button"
-              className="btn secondary"
+              className="btn warn"
               onClick={() => setProfileStatus("paused")}
             >
               Pause profile

@@ -1,5 +1,14 @@
 // Shared foster profile field set, used by both registration and profile editing.
 
+export const MAX_FOSTER_DURATION_OPTIONS = [
+  { value: "depends_on_case", label: "Depends on the case" },
+  { value: "up_to_3_days", label: "Up to 3 days" },
+  { value: "up_to_1_week", label: "Up to 1 week" },
+  { value: "up_to_2_weeks", label: "Up to 2 weeks" },
+  { value: "up_to_1_month", label: "Up to 1 month" },
+  { value: "up_to_2_months", label: "Up to 2 months" },
+];
+
 export const EMPTY_FOSTER = {
   full_name: "",
   phone: "",
@@ -15,8 +24,7 @@ export const EMPTY_FOSTER = {
   other_pets_details: "",
   has_car: false,
   previous_experience: "",
-  availability_status: "available",
-  max_foster_duration_days: "",
+  max_foster_duration: "",
   emergency_foster_available: false,
   notes: "",
 };
@@ -34,7 +42,7 @@ export function fosterToForm(data) {
 
 // Convert form values into an API payload (empty strings -> null, numbers parsed).
 export function formToFoster(form) {
-  const numberFields = ["max_dog_weight_kg", "max_foster_duration_days"];
+  const numberFields = ["max_dog_weight_kg"];
   const payload = {};
   for (const [key, value] of Object.entries(form)) {
     if (numberFields.includes(key)) {
@@ -172,23 +180,18 @@ export default function FosterFields({ values, set }) {
         <legend>Availability</legend>
         <div className="grid">
           <div className="field">
-            <label>Availability status</label>
+            <label>Max foster duration</label>
             <select
-              value={values.availability_status}
-              onChange={(e) => set("availability_status", e.target.value)}
+              value={values.max_foster_duration}
+              onChange={(e) => set("max_foster_duration", e.target.value)}
             >
-              <option value="available">Available</option>
-              <option value="unavailable">Unavailable</option>
+              <option value="">—</option>
+              {MAX_FOSTER_DURATION_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
+              ))}
             </select>
-          </div>
-          <div className="field">
-            <label>Max foster duration (days)</label>
-            <input
-              type="number"
-              min="0"
-              value={values.max_foster_duration_days}
-              onChange={(e) => set("max_foster_duration_days", e.target.value)}
-            />
           </div>
           <Check
             name="emergency_foster_available"
