@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from ..core.deps import require_approved_org_or_admin, require_role
 from ..database import get_db
-from ..enums import AvailabilityStatus, ProfileStatus, UserRole
+from ..enums import ProfileStatus, UserRole
 from ..models.foster_profile import FosterProfile
 from ..models.user import User
 from ..schemas.foster import (
@@ -89,12 +89,9 @@ def search_fosters(
     _user: User = Depends(require_approved_org_or_admin),
     db: Session = Depends(get_db),
 ):
-    # Only fosters currently eligible to appear in search: active profile,
-    # and marked available. (No user-facing availability filter for now —
-    # this is expected to be simplified further into profile_status later.)
+    # Only active profiles are eligible to appear in search.
     q = db.query(FosterProfile).filter(
-        FosterProfile.profile_status == ProfileStatus.active,
-        FosterProfile.availability_status == AvailabilityStatus.available,
+        FosterProfile.profile_status == ProfileStatus.active
     )
 
     if city:

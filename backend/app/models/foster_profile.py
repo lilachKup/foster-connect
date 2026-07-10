@@ -13,7 +13,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..database import Base
-from ..enums import AvailabilityStatus, ProfileStatus
+from ..enums import MaxFosterDuration, ProfileStatus
 
 
 class FosterProfile(Base):
@@ -42,12 +42,9 @@ class FosterProfile(Base):
     has_car: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     previous_experience: Mapped[str | None] = mapped_column(Text)
 
-    availability_status: Mapped[AvailabilityStatus] = mapped_column(
-        SAEnum(AvailabilityStatus, name="availability_status"),
-        default=AvailabilityStatus.available,
-        nullable=False,
+    max_foster_duration: Mapped[MaxFosterDuration | None] = mapped_column(
+        SAEnum(MaxFosterDuration, name="max_foster_duration")
     )
-    max_foster_duration_days: Mapped[int | None] = mapped_column(Integer)
     emergency_foster_available: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
     notes: Mapped[str | None] = mapped_column(Text)

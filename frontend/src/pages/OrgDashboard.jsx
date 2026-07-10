@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 import client, { apiError } from "../api/client.js";
+import { MAX_FOSTER_DURATION_OPTIONS } from "../components/FosterFields.jsx";
+
+const MAX_FOSTER_DURATION_LABELS = Object.fromEntries(
+  MAX_FOSTER_DURATION_OPTIONS.map((o) => [o.value, o.label])
+);
 
 const EMPTY_FILTERS = {
   city: "",
@@ -26,12 +31,7 @@ function FosterCard({ f }) {
 
   return (
     <div className="card">
-      <div className="row-between">
-        <h3 style={{ margin: 0 }}>{f.full_name}</h3>
-        <span className={`badge ${f.availability_status}`}>
-          {f.availability_status}
-        </span>
-      </div>
+      <h3 style={{ margin: 0 }}>{f.full_name}</h3>
       {location && <p className="muted" style={{ margin: "6px 0" }}>{location}</p>}
       <div className="tag-row">
         {tags.map((t) => (
@@ -44,9 +44,9 @@ function FosterCard({ f }) {
         {f.phone && <span>📞 {f.phone} &nbsp;</span>}
         {f.email && <span>✉️ {f.email}</span>}
       </div>
-      {f.max_foster_duration_days && (
+      {f.max_foster_duration && (
         <p className="muted" style={{ fontSize: "0.85rem", marginTop: 6 }}>
-          Up to {f.max_foster_duration_days} days
+          {MAX_FOSTER_DURATION_LABELS[f.max_foster_duration] || f.max_foster_duration}
         </p>
       )}
       {f.notes && <p style={{ marginTop: 8 }}>{f.notes}</p>}

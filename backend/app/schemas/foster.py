@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
-from ..enums import AvailabilityStatus, ProfileStatus
+from ..enums import MaxFosterDuration, ProfileStatus
 
 
 class FosterProfileBase(BaseModel):
@@ -22,8 +22,7 @@ class FosterProfileBase(BaseModel):
     has_car: bool = False
     previous_experience: str | None = None
 
-    availability_status: AvailabilityStatus = AvailabilityStatus.available
-    max_foster_duration_days: int | None = Field(default=None, ge=0)
+    max_foster_duration: MaxFosterDuration | None = None
     emergency_foster_available: bool = False
 
     notes: str | None = None
@@ -39,7 +38,6 @@ class FosterProfileUpdate(FosterProfileBase):
 
 
 class AvailabilityUpdate(BaseModel):
-    availability_status: AvailabilityStatus | None = None
     profile_status: ProfileStatus | None = None
 
 
