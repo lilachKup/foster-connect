@@ -19,7 +19,7 @@ export function apiError(err) {
   if (Array.isArray(detail)) {
     return detail.map((d) => d.msg || JSON.stringify(d)).join("; ");
   }
-  return detail || err.message || "Something went wrong";
+  return detail || err.message || "משהו השתבש";
 }
 
 export default client;

@@ -42,14 +42,14 @@ export default function FosterRegister() {
 
   return (
     <div>
-      <h2 className="page-title">Become a foster home</h2>
+      <h2 className="page-title">הצטרפות כמשפחה אומנת</h2>
       {error && <div className="alert error">{error}</div>}
       <form onSubmit={handleSubmit}>
         <fieldset>
-          <legend>Account</legend>
+          <legend>פרטי חשבון</legend>
           <div className="grid">
             <div className="field">
-              <label>Login email *</label>
+              <label>אימייל להתחברות *</label>
               <input
                 type="email"
                 value={account.account_email}
@@ -60,7 +60,7 @@ export default function FosterRegister() {
               />
             </div>
             <PasswordField
-              label="Password * (min 6 characters)"
+              label="סיסמה * (לפחות 6 תווים)"
               value={account.password}
               onChange={(e) =>
                 setAccount((a) => ({ ...a, password: e.target.value }))
@@ -76,7 +76,7 @@ export default function FosterRegister() {
         <FosterFields values={profile} set={set} />
 
         <button className="btn" disabled={busy}>
-          {busy ? "Creating…" : "Create foster profile"}
+          {busy ? "יוצר/ת…" : "יצירת פרופיל אומנה"}
         </button>
       </form>
     </div>

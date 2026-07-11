@@ -6,6 +6,13 @@ const MAX_FOSTER_DURATION_LABELS = Object.fromEntries(
   MAX_FOSTER_DURATION_OPTIONS.map((o) => [o.value, o.label])
 );
 
+const APPROVAL_STATUS_LABELS = {
+  pending: "ממתין לאישור",
+  approved: "מאושר",
+  rejected: "נדחה",
+  suspended: "מושעה",
+};
+
 const EMPTY_FILTERS = {
   city: "",
   can_foster_dogs: false,
@@ -18,12 +25,12 @@ const EMPTY_FILTERS = {
 
 function FosterCard({ f }) {
   const tags = [];
-  if (f.can_foster_dogs) tags.push("Dogs");
-  if (f.can_foster_cats) tags.push("Cats");
-  if (f.max_dog_weight_kg) tags.push(`Up to ${f.max_dog_weight_kg}kg`);
-  if (f.has_car) tags.push("Has car");
-  if (f.emergency_foster_available) tags.push("Emergency");
-  if (f.previous_experience) tags.push("Experienced");
+  if (f.can_foster_dogs) tags.push("כלבים");
+  if (f.can_foster_cats) tags.push("חתולים");
+  if (f.max_dog_weight_kg) tags.push(`עד ${f.max_dog_weight_kg} ק"ג`);
+  if (f.has_car) tags.push("יש רכב");
+  if (f.emergency_foster_available) tags.push("חירום");
+  if (f.previous_experience) tags.push("בעל/ת נסיון");
 
   const location = [f.city, f.nearby_city && `(${f.nearby_city})`]
     .filter(Boolean)
@@ -98,10 +105,10 @@ export default function OrgDashboard() {
   return (
     <div>
       <div className="row-between">
-        <h2 className="page-title">{org ? org.org_name : "Organization"}</h2>
+        <h2 className="page-title">{org ? org.org_name : "ארגון"}</h2>
         {org && (
           <span className={`badge ${org.approval_status}`}>
-            {org.approval_status}
+            {APPROVAL_STATUS_LABELS[org.approval_status] || org.approval_status}
           </span>
         )}
       </div>
@@ -112,10 +119,13 @@ export default function OrgDashboard() {
         <div
           className={`alert ${org.approval_status === "pending" ? "warn" : "error"}`}
         >
-          Your organization is <strong>{org.approval_status}</strong>. You can
-          search foster families once an admin approves your account.
+          הארגון שלכם{" "}
+          <strong>
+            {APPROVAL_STATUS_LABELS[org.approval_status] || org.approval_status}
+          </strong>
+          . תוכלו לחפש משפחות אומנה לאחר אישור מנהל המערכת.
           {org.admin_notes && (
-            <div style={{ marginTop: 6 }}>Admin notes: {org.admin_notes}</div>
+            <div style={{ marginTop: 6 }}>הערות מנהל המערכת: {org.admin_notes}</div>
           )}
         </div>
       )}
@@ -123,10 +133,10 @@ export default function OrgDashboard() {
       {approved && (
         <>
           <form className="card" onSubmit={handleSearch}>
-            <h3 style={{ marginTop: 0 }}>Search foster families</h3>
+            <h3 style={{ marginTop: 0 }}>חיפוש משפחות אומנה</h3>
             <div className="grid">
               <div className="field">
-                <label>City</label>
+                <label>עיר</label>
                 <input
                   type="text"
                   value={filters.city}
@@ -134,19 +144,19 @@ export default function OrgDashboard() {
                 />
               </div>
               <div className="field">
-                <label>Dog weight</label>
+                <label>משקל הכלב</label>
                 <select
                   value={filters.max_dog_weight}
                   onChange={(e) => set("max_dog_weight", e.target.value)}
                 >
-                  <option value="">Any</option>
-                  <option value="5">Up to 5 kg</option>
-                  <option value="10">Up to 10 kg</option>
-                  <option value="15">Up to 15 kg</option>
-                  <option value="20">Up to 20 kg</option>
-                  <option value="25">Up to 25 kg</option>
-                  <option value="30">Up to 30 kg</option>
-                  <option value="31">Over 30 kg</option>
+                  <option value="">הכל</option>
+                  <option value="5">עד 5 ק"ג</option>
+                  <option value="10">עד 10 ק"ג</option>
+                  <option value="15">עד 15 ק"ג</option>
+                  <option value="20">עד 20 ק"ג</option>
+                  <option value="25">עד 25 ק"ג</option>
+                  <option value="30">עד 30 ק"ג</option>
+                  <option value="31">מעל 30 ק"ג</option>
                 </select>
               </div>
             </div>
@@ -158,7 +168,7 @@ export default function OrgDashboard() {
                   checked={filters.can_foster_dogs}
                   onChange={(e) => set("can_foster_dogs", e.target.checked)}
                 />
-                <label htmlFor="f_dogs">Can foster dogs</label>
+                <label htmlFor="f_dogs">יכולים לאמן כלבים</label>
               </div>
               <div className="field checkbox">
                 <input
@@ -167,7 +177,7 @@ export default function OrgDashboard() {
                   checked={filters.can_foster_cats}
                   onChange={(e) => set("can_foster_cats", e.target.checked)}
                 />
-                <label htmlFor="f_cats">Can foster cats</label>
+                <label htmlFor="f_cats">יכולים לאמן חתולים</label>
               </div>
               <div className="field checkbox">
                 <input
@@ -178,7 +188,7 @@ export default function OrgDashboard() {
                     set("emergency_foster_available", e.target.checked)
                   }
                 />
-                <label htmlFor="f_emergency">Emergency fostering</label>
+                <label htmlFor="f_emergency">אומנת חירום</label>
               </div>
               <div className="field checkbox">
                 <input
@@ -187,7 +197,7 @@ export default function OrgDashboard() {
                   checked={filters.has_car}
                   onChange={(e) => set("has_car", e.target.checked)}
                 />
-                <label htmlFor="f_car">Has a car</label>
+                <label htmlFor="f_car">יש רכב</label>
               </div>
               <div className="field checkbox">
                 <input
@@ -196,26 +206,26 @@ export default function OrgDashboard() {
                   checked={filters.has_experience}
                   onChange={(e) => set("has_experience", e.target.checked)}
                 />
-                <label htmlFor="f_exp">Has experience</label>
+                <label htmlFor="f_exp">בעלי נסיון</label>
               </div>
             </div>
             <div className="actions-row">
               <button className="btn" disabled={busy}>
-                {busy ? "Searching…" : "Search"}
+                {busy ? "מחפש/ת…" : "חיפוש"}
               </button>
               <button
                 type="button"
                 className="btn secondary"
                 onClick={() => setFilters({ ...EMPTY_FILTERS })}
               >
-                Clear filters
+                איפוס סינון
               </button>
             </div>
           </form>
 
           {searched && (
             <p className="muted">
-              {results.length} foster {results.length === 1 ? "family" : "families"} found
+              נמצאו {results.length} {results.length === 1 ? "משפחה אומנת" : "משפחות אומנה"}
             </p>
           )}
           <div className="result-list">
