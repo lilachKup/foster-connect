@@ -35,7 +35,7 @@ export default function OrgRegister() {
     setError("");
     if (!org.website_url.trim() && !org.instagram_url.trim() && !org.other_link.trim()) {
       setError(
-        "Provide at least one of: website, Instagram, or another link (proving the organization is a registered nonprofit)."
+        "יש לספק לפחות אחד מהבאים: אתר, אינסטגרם, או קישור אחר (המוכיח שהארגון הוא עמותה רשומה)."
       );
       return;
     }
@@ -58,18 +58,18 @@ export default function OrgRegister() {
 
   return (
     <div>
-      <h2 className="page-title">Register your organization</h2>
+      <h2 className="page-title">רישום העמותה / הארגון שלכם</h2>
       <p className="muted">
-        After registering, an admin will review your organization. You can search
-        foster families once you are approved.
+        לאחר ההרשמה, מנהל המערכת יבדוק את הארגון שלכם. תוכלו לחפש משפחות
+        אומנה לאחר קבלת האישור.
       </p>
       {error && <div className="alert error">{error}</div>}
       <form onSubmit={handleSubmit}>
         <fieldset>
-          <legend>Account</legend>
+          <legend>פרטי חשבון</legend>
           <div className="grid">
             <div className="field">
-              <label>Login email *</label>
+              <label>אימייל להתחברות *</label>
               <input
                 type="email"
                 value={account.account_email}
@@ -80,7 +80,7 @@ export default function OrgRegister() {
               />
             </div>
             <PasswordField
-              label="Password * (min 6 characters)"
+              label="סיסמה * (לפחות 6 תווים)"
               value={account.password}
               onChange={(e) =>
                 setAccount((a) => ({ ...a, password: e.target.value }))
@@ -94,10 +94,10 @@ export default function OrgRegister() {
         </fieldset>
 
         <fieldset>
-          <legend>Organization details</legend>
+          <legend>פרטי הארגון</legend>
           <div className="grid">
             <div className="field">
-              <label>Organization name *</label>
+              <label>שם הארגון *</label>
               <input
                 type="text"
                 value={org.org_name}
@@ -106,7 +106,7 @@ export default function OrgRegister() {
               />
             </div>
             <div className="field">
-              <label>Contact person *</label>
+              <label>איש קשר *</label>
               <input
                 type="text"
                 value={org.contact_person}
@@ -115,7 +115,7 @@ export default function OrgRegister() {
               />
             </div>
             <div className="field">
-              <label>Phone *</label>
+              <label>טלפון *</label>
               <input
                 type="tel"
                 value={org.phone}
@@ -124,7 +124,7 @@ export default function OrgRegister() {
               />
             </div>
             <div className="field">
-              <label>Contact email</label>
+              <label>אימייל ליצירת קשר</label>
               <input
                 type="email"
                 value={org.email}
@@ -132,7 +132,7 @@ export default function OrgRegister() {
               />
             </div>
             <div className="field">
-              <label>Website URL</label>
+              <label>כתובת אתר</label>
               <input
                 type="url"
                 value={org.website_url}
@@ -140,7 +140,7 @@ export default function OrgRegister() {
               />
             </div>
             <div className="field">
-              <label>Instagram URL</label>
+              <label>כתובת אינסטגרם</label>
               <input
                 type="url"
                 value={org.instagram_url}
@@ -148,26 +148,26 @@ export default function OrgRegister() {
               />
             </div>
             <div className="field">
-              <label>Other link</label>
+              <label>קישור אחר</label>
               <input
                 type="url"
-                placeholder="e.g. Facebook page, nonprofit registry listing"
+                placeholder="למשל עמוד פייסבוק, רישום במאגר עמותות"
                 value={org.other_link}
                 onChange={(e) => set("other_link", e.target.value)}
               />
             </div>
           </div>
           <p className="muted" style={{ fontSize: "0.85rem", marginTop: 4 }}>
-            At least one of website / Instagram / other link is required, to
-            help verify the organization is a registered nonprofit.
+            נדרש לפחות אחד מבין: אתר / אינסטגרם / קישור אחר, כדי לעזור לוודא
+            שהארגון הוא עמותה רשומה.
           </p>
         </fieldset>
 
         <fieldset>
-          <legend>Address</legend>
+          <legend>כתובת</legend>
           <div className="grid">
             <div className="field">
-              <label>City *</label>
+              <label>עיר *</label>
               <input
                 type="text"
                 value={org.city}
@@ -176,7 +176,7 @@ export default function OrgRegister() {
               />
             </div>
             <div className="field">
-              <label>Street *</label>
+              <label>רחוב *</label>
               <input
                 type="text"
                 value={org.street}
@@ -185,7 +185,7 @@ export default function OrgRegister() {
               />
             </div>
             <div className="field">
-              <label>House number *</label>
+              <label>מספר בית *</label>
               <input
                 type="text"
                 value={org.house_number}
@@ -194,7 +194,7 @@ export default function OrgRegister() {
               />
             </div>
             <div className="field">
-              <label>Zip code</label>
+              <label>מיקוד</label>
               <input
                 type="text"
                 value={org.zip_code}
@@ -205,7 +205,7 @@ export default function OrgRegister() {
         </fieldset>
 
         <button className="btn" disabled={busy}>
-          {busy ? "Registering…" : "Register organization"}
+          {busy ? "נרשם/ת…" : "רישום העמותה / הארגון"}
         </button>
       </form>
     </div>

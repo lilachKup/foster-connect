@@ -34,11 +34,11 @@ export default function Login() {
 
   return (
     <div className="card" style={{ maxWidth: 420, margin: "0 auto" }}>
-      <h2 className="page-title">Log in</h2>
+      <h2 className="page-title">כניסה</h2>
       {error && <div className="alert error">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="field">
-          <label>Email</label>
+          <label>אימייל</label>
           <input
             type="email"
             value={email}
@@ -48,7 +48,7 @@ export default function Login() {
         </div>
         <div style={{ marginTop: 12 }}>
           <PasswordField
-            label="Password"
+            label="סיסמה"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="current-password"
@@ -56,12 +56,12 @@ export default function Login() {
           />
         </div>
         <button className="btn" style={{ marginTop: 16 }} disabled={busy}>
-          {busy ? "Logging in…" : "Log in"}
+          {busy ? "מתחבר/ת…" : "כניסה"}
         </button>
       </form>
       <p className="muted" style={{ marginTop: 16 }}>
-        No account? <Link to="/register/foster">Become a foster</Link> or{" "}
-        <Link to="/register/organization">register an organization</Link>.
+        אין לך חשבון? <Link to="/register/foster">הצטרפות כמשפחה אומנת</Link>{" "}
+        או <Link to="/register/organization">רישום עמותה/ארגון</Link>.
       </p>
     </div>
   );

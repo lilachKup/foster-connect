@@ -142,6 +142,10 @@ form .grid {
   min-height: 70px;
   resize: vertical;
 }
+.field input[type="email"] {
+  direction: ltr;
+  text-align: left;
+}
 .password-input {
   position: relative;
   display: flex;
@@ -149,12 +153,12 @@ form .grid {
 .password-input input[type="password"],
 .password-input input[type="text"] {
   width: 100%;
-  padding-right: 38px;
+  padding-inline-end: 38px;
 }
 .password-toggle {
   position: absolute;
   top: 0;
-  right: 0;
+  inset-inline-end: 0;
   bottom: 0;
   width: 34px;
   display: flex;
@@ -212,6 +216,11 @@ legend {
 }
 .btn.danger {
   background: var(--danger);
+}
+.btn.small {
+  padding: 6px 16px;
+  font-size: 0.85rem;
+  border-radius: 6px;
 }
 .btn.warn {
   background: var(--warn);

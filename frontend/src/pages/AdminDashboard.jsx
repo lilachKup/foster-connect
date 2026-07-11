@@ -3,6 +3,14 @@ import client, { apiError } from "../api/client.js";
 
 const STATUS_FILTERS = ["pending", "approved", "rejected", "suspended", "all"];
 
+const STATUS_LABELS = {
+  pending: "ממתין לאישור",
+  approved: "מאושר",
+  rejected: "נדחה",
+  suspended: "מושעה",
+  all: "הכל",
+};
+
 function OrgRow({ org, onUpdated }) {
   const [notes, setNotes] = useState(org.admin_notes || "");
   const [busy, setBusy] = useState(false);
@@ -36,16 +44,16 @@ function OrgRow({ org, onUpdated }) {
       <div className="row-between">
         <h3 style={{ margin: 0 }}>{org.org_name}</h3>
         <span className={`badge ${org.approval_status}`}>
-          {org.approval_status}
+          {STATUS_LABELS[org.approval_status] || org.approval_status}
         </span>
       </div>
       {contact && <p className="muted" style={{ margin: "6px 0" }}>{contact}</p>}
       {location && <p className="muted" style={{ margin: "6px 0" }}>{location}</p>}
       <div className="muted" style={{ fontSize: "0.85rem" }}>
         {[
-          org.website_url && ["Website", org.website_url],
-          org.instagram_url && ["Instagram", org.instagram_url],
-          org.other_link && ["Other link", org.other_link],
+          org.website_url && ["אתר", org.website_url],
+          org.instagram_url && ["אינסטגרם", org.instagram_url],
+          org.other_link && ["קישור אחר", org.other_link],
         ]
           .filter(Boolean)
           .map(([label, url], i, arr) => (
@@ -61,7 +69,7 @@ function OrgRow({ org, onUpdated }) {
       {error && <div className="alert error" style={{ marginTop: 10 }}>{error}</div>}
 
       <div className="field" style={{ marginTop: 12 }}>
-        <label>Admin notes</label>
+        <label>הערות מנהל המערכת</label>
         <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
       </div>
       <div className="actions-row">
@@ -70,21 +78,21 @@ function OrgRow({ org, onUpdated }) {
           disabled={busy || org.approval_status === "approved"}
           onClick={() => updateStatus("approved")}
         >
-          Approve
+          אישור
         </button>
         <button
           className="btn secondary"
           disabled={busy || org.approval_status === "rejected"}
           onClick={() => updateStatus("rejected")}
         >
-          Reject
+          דחייה
         </button>
         <button
           className="btn danger"
           disabled={busy || org.approval_status === "suspended"}
           onClick={() => updateStatus("suspended")}
         >
-          Suspend
+          השעיה
         </button>
       </div>
     </div>
@@ -119,7 +127,7 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <h2 className="page-title">Organization review</h2>
+      <h2 className="page-title">בדיקת ארגונים</h2>
 
       <div className="actions-row" style={{ marginBottom: 16 }}>
         {STATUS_FILTERS.map((s) => (
@@ -128,16 +136,18 @@ export default function AdminDashboard() {
             className={`btn ${statusFilter === s ? "" : "secondary"}`}
             onClick={() => setStatusFilter(s)}
           >
-            {s}
+            {STATUS_LABELS[s] || s}
           </button>
         ))}
       </div>
 
       {error && <div className="alert error">{error}</div>}
       {loading ? (
-        <p className="muted">Loading…</p>
+        <p className="muted">טוען…</p>
       ) : orgs.length === 0 ? (
-        <p className="muted">No organizations with status “{statusFilter}”.</p>
+        <p className="muted">
+          אין ארגונים בסטטוס "{STATUS_LABELS[statusFilter] || statusFilter}".
+        </p>
       ) : (
         <div className="result-list">
           {orgs.map((org) => (

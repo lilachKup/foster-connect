@@ -42,7 +42,7 @@ export default function PasswordField({
           type="button"
           className="password-toggle"
           onClick={() => setVisible((v) => !v)}
-          aria-label={visible ? "Hide password" : "Show password"}
+          aria-label={visible ? "הסתר סיסמה" : "הצג סיסמה"}
           tabIndex={-1}
         >
           {visible ? <EyeOffIcon /> : <EyeIcon />}

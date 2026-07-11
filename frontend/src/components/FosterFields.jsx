@@ -1,12 +1,12 @@
 // Shared foster profile field set, used by both registration and profile editing.
 
 export const MAX_FOSTER_DURATION_OPTIONS = [
-  { value: "depends_on_case", label: "Depends on the case" },
-  { value: "up_to_3_days", label: "Up to 3 days" },
-  { value: "up_to_1_week", label: "Up to 1 week" },
-  { value: "up_to_2_weeks", label: "Up to 2 weeks" },
-  { value: "up_to_1_month", label: "Up to 1 month" },
-  { value: "up_to_2_months", label: "Up to 2 months" },
+  { value: "depends_on_case", label: "תלוי במקרה" },
+  { value: "up_to_3_days", label: "עד 3 ימים" },
+  { value: "up_to_1_week", label: "עד שבוע" },
+  { value: "up_to_2_weeks", label: "עד שבועיים" },
+  { value: "up_to_1_month", label: "עד חודש" },
+  { value: "up_to_2_months", label: "עד חודשיים" },
 ];
 
 export const EMPTY_FOSTER = {
@@ -76,10 +76,10 @@ export default function FosterFields({ values, set }) {
   return (
     <>
       <fieldset>
-        <legend>Contact &amp; location</legend>
+        <legend>פרטי קשר ומיקום</legend>
         <div className="grid">
           <div className="field">
-            <label>Full name *</label>
+            <label>שם מלא *</label>
             <input
               type="text"
               value={values.full_name}
@@ -88,7 +88,7 @@ export default function FosterFields({ values, set }) {
             />
           </div>
           <div className="field">
-            <label>Phone</label>
+            <label>טלפון</label>
             <input
               type="tel"
               value={values.phone}
@@ -96,7 +96,7 @@ export default function FosterFields({ values, set }) {
             />
           </div>
           <div className="field">
-            <label>Contact email</label>
+            <label>אימייל ליצירת קשר</label>
             <input
               type="email"
               value={values.email}
@@ -104,7 +104,7 @@ export default function FosterFields({ values, set }) {
             />
           </div>
           <div className="field">
-            <label>City</label>
+            <label>עיר</label>
             <input
               type="text"
               value={values.city}
@@ -112,23 +112,36 @@ export default function FosterFields({ values, set }) {
             />
           </div>
           <div className="field">
-            <label>Nearby city (also open to fostering for this area)</label>
+            <label>עיר סמוכה</label>
             <input
               type="text"
               value={values.nearby_city}
               onChange={(e) => set("nearby_city", e.target.value)}
             />
+            <span className="muted" style={{ fontSize: "0.8rem" }}>
+              רלוונטי אם גרים ביישוב קטן או אזור סמוך לעיר מרכזית
+            </span>
           </div>
         </div>
       </fieldset>
 
       <fieldset>
-        <legend>What can you foster?</legend>
+        <legend>פרטי האומנה</legend>
         <div className="grid">
-          <Check name="can_foster_dogs" label="Can foster dogs" values={values} set={set} />
-          <Check name="can_foster_cats" label="Can foster cats" values={values} set={set} />
+          <Check
+            name="can_foster_dogs"
+            label="יכולים לשמש בית אומנה לכלבים"
+            values={values}
+            set={set}
+          />
+          <Check
+            name="can_foster_cats"
+            label="יכולים לשמש בית אומנה לחתולים"
+            values={values}
+            set={set}
+          />
           <div className="field">
-            <label>Maximum dog weight</label>
+            <label>משקל כלב מקסימלי</label>
             <select
               value={values.max_dog_weight_kg}
               onChange={(e) => set("max_dog_weight_kg", e.target.value)}
@@ -146,29 +159,27 @@ export default function FosterFields({ values, set }) {
       </fieldset>
 
       <fieldset>
-        <legend>Your household</legend>
+        <legend>משק הבית שלכם</legend>
         <div className="grid">
-          <Check name="has_children" label="Has children" values={values} set={set} />
-          <Check name="has_other_dogs" label="Has other dogs" values={values} set={set} />
-          <Check name="has_other_cats" label="Has other cats" values={values} set={set} />
+          <Check name="has_children" label="יש ילדים" values={values} set={set} />
+          <Check name="has_other_dogs" label="יש כלבים נוספים" values={values} set={set} />
+          <Check name="has_other_cats" label="יש חתולים נוספים" values={values} set={set} />
           <Check
             name="has_car"
-            label='Has a car (ומוכן להגיע לאסוף)'
+            label="יש רכב (ומוכנים להגיע לאסוף)"
             values={values}
             set={set}
           />
         </div>
         <div className="field" style={{ marginTop: 12 }}>
-          <label>Other pets details</label>
+          <label>פרטים על חיות נוספות</label>
           <textarea
             value={values.other_pets_details}
             onChange={(e) => set("other_pets_details", e.target.value)}
           />
         </div>
         <div className="field" style={{ marginTop: 12 }}>
-          <label>
-            Previous experience (נסיון קודם באימוץ, פוסטרינג או בכלל עם חיות)
-          </label>
+          <label>נסיון קודם (באימוץ, אומנה או בכלל עם חיות)</label>
           <textarea
             value={values.previous_experience}
             onChange={(e) => set("previous_experience", e.target.value)}
@@ -177,15 +188,15 @@ export default function FosterFields({ values, set }) {
       </fieldset>
 
       <fieldset>
-        <legend>Availability</legend>
+        <legend>זמינות</legend>
         <div className="grid">
           <div className="field">
-            <label>Max foster duration</label>
+            <label>משך אומנה מקסימלי</label>
             <select
               value={values.max_foster_duration}
               onChange={(e) => set("max_foster_duration", e.target.value)}
             >
-              <option value="">—</option>
+              <option value="">— לא צוין —</option>
               {MAX_FOSTER_DURATION_OPTIONS.map((o) => (
                 <option key={o.value} value={o.value}>
                   {o.label}
@@ -195,13 +206,13 @@ export default function FosterFields({ values, set }) {
           </div>
           <Check
             name="emergency_foster_available"
-            label="Available for emergency fostering"
+            label="זמינים לאומנת חירום"
             values={values}
             set={set}
           />
         </div>
         <div className="field" style={{ marginTop: 12 }}>
-          <label>Notes</label>
+          <label>הערות</label>
           <textarea
             value={values.notes}
             onChange={(e) => set("notes", e.target.value)}

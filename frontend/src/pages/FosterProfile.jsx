@@ -8,6 +8,8 @@ import FosterFields, {
   formToFoster,
 } from "../components/FosterFields.jsx";
 
+const STATUS_LABELS = { active: "פעיל", paused: "מושהה" };
+
 export default function FosterProfile() {
   const { logout } = useAuth();
   const navigate = useNavigate();
@@ -49,7 +51,7 @@ export default function FosterProfile() {
       setProfile(form);
       setSavedProfile(form);
       setStatus(res.data.profile_status);
-      setMessage("Profile saved.");
+      setMessage("הפרופיל נשמר.");
     } catch (err) {
       setError(apiError(err));
     } finally {
@@ -66,7 +68,7 @@ export default function FosterProfile() {
       });
       setStatus(res.data.profile_status);
       setMessage(
-        newStatus === "paused" ? "Profile paused." : "Profile reactivated."
+        newStatus === "paused" ? "הפרופיל הושהה." : "הפרופיל הופעל מחדש."
       );
     } catch (err) {
       setError(apiError(err));
@@ -76,7 +78,7 @@ export default function FosterProfile() {
   async function handleDelete() {
     if (
       !window.confirm(
-        "Delete your foster profile? Organizations will no longer see it."
+        "למחוק את פרופיל האומנה שלך? ארגונים לא יראו אותו יותר."
       )
     ) {
       return;
@@ -90,14 +92,14 @@ export default function FosterProfile() {
     }
   }
 
-  if (loading) return <div className="container">Loading…</div>;
+  if (loading) return <div className="container">טוען…</div>;
 
   return (
     <div>
       <div className="row-between">
-        <h2 className="page-title">My foster profile</h2>
+        <h2 className="page-title">פרופיל האומנה שלי</h2>
         <span className={`badge ${status === "active" ? "approved" : "pending"}`}>
-          {status}
+          {STATUS_LABELS[status] || status}
         </span>
       </div>
 
@@ -108,7 +110,7 @@ export default function FosterProfile() {
         <FosterFields values={profile} set={set} />
         <div className="actions-row">
           <button className="btn" disabled={busy || !isDirty}>
-            {busy ? "Saving…" : "Save changes"}
+            {busy ? "שומר/ת…" : "שמירת שינויים"}
           </button>
           {status === "active" ? (
             <button
@@ -116,7 +118,7 @@ export default function FosterProfile() {
               className="btn warn"
               onClick={() => setProfileStatus("paused")}
             >
-              Pause profile
+              השהיית פרופיל
             </button>
           ) : status === "paused" ? (
             <button
@@ -124,11 +126,11 @@ export default function FosterProfile() {
               className="btn secondary"
               onClick={() => setProfileStatus("active")}
             >
-              Reactivate profile
+              הפעלת פרופיל מחדש
             </button>
           ) : null}
           <button type="button" className="btn danger" onClick={handleDelete}>
-            Delete profile
+            מחיקת פרופיל
           </button>
         </div>
       </form>
