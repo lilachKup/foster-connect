@@ -1,0 +1,5 @@
+[tool.pytest.ini_options]
+# Make `import app...` work without installing the package (run pytest from backend/).
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-ra"
