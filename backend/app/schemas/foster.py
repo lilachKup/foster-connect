@@ -46,3 +46,9 @@ class FosterProfileRead(FosterProfileBase):
     profile_status: ProfileStatus
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class AdminFosterRead(FosterProfileRead):
+    """Foster profile as seen by admin, including the login email."""
+
+    account_email: EmailStr

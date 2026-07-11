@@ -127,7 +127,7 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <h2 className="page-title">בדיקת ארגונים</h2>
+      <h2 className="page-title">ניהול עמותות/ארגונים</h2>
 
       <div className="actions-row" style={{ marginBottom: 16 }}>
         {STATUS_FILTERS.map((s) => (

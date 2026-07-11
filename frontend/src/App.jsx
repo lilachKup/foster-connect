@@ -8,6 +8,7 @@ import FosterProfile from "./pages/FosterProfile.jsx";
 import OrgRegister from "./pages/OrgRegister.jsx";
 import OrgDashboard from "./pages/OrgDashboard.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
+import AdminFosterSearch from "./pages/AdminFosterSearch.jsx";
 
 export default function App() {
   return (
@@ -40,6 +41,14 @@ export default function App() {
             element={
               <ProtectedRoute role="admin">
                 <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/fosters"
+            element={
+              <ProtectedRoute role="admin">
+                <AdminFosterSearch />
               </ProtectedRoute>
             }
           />

@@ -19,6 +19,7 @@ class MaxFosterDuration(str, enum.Enum):
 class ProfileStatus(str, enum.Enum):
     active = "active"
     paused = "paused"
+    suspended = "suspended"
     deleted = "deleted"
 
 
