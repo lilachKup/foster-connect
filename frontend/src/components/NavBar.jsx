@@ -29,7 +29,12 @@ export default function NavBar() {
         {user?.role === "organization" && (
           <Link to="/organization">חיפוש משפחות אומנה</Link>
         )}
-        {user?.role === "admin" && <Link to="/admin">ניהול</Link>}
+        {user?.role === "admin" && (
+          <>
+            <Link to="/admin">ניהול עמותות/ארגונים</Link>
+            <Link to="/admin/fosters">ניהול משפחות אומנה</Link>
+          </>
+        )}
         {user && (
           <>
             <span className="nav-user">{user.email}</span>
