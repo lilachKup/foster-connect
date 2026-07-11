@@ -61,7 +61,7 @@ export default function Login() {
       </form>
       <p className="muted" style={{ marginTop: 16 }}>
         אין לך חשבון? <Link to="/register/foster">הצטרפות כמשפחה אומנת</Link>{" "}
-        או <Link to="/register/organization">רישום ארגון</Link>.
+        או <Link to="/register/organization">רישום עמותה/ארגון</Link>.
       </p>
     </div>
   );

@@ -168,7 +168,7 @@ export default function OrgDashboard() {
                   checked={filters.can_foster_dogs}
                   onChange={(e) => set("can_foster_dogs", e.target.checked)}
                 />
-                <label htmlFor="f_dogs">יכולים לאמן כלבים</label>
+                <label htmlFor="f_dogs">יכולים לשמש בית אומנה לכלבים</label>
               </div>
               <div className="field checkbox">
                 <input
@@ -177,7 +177,7 @@ export default function OrgDashboard() {
                   checked={filters.can_foster_cats}
                   onChange={(e) => set("can_foster_cats", e.target.checked)}
                 />
-                <label htmlFor="f_cats">יכולים לאמן חתולים</label>
+                <label htmlFor="f_cats">יכולים לשמש בית אומנה לחתולים</label>
               </div>
               <div className="field checkbox">
                 <input
@@ -188,7 +188,7 @@ export default function OrgDashboard() {
                     set("emergency_foster_available", e.target.checked)
                   }
                 />
-                <label htmlFor="f_emergency">אומנת חירום</label>
+                <label htmlFor="f_emergency">זמינים לאומנת חירום</label>
               </div>
               <div className="field checkbox">
                 <input

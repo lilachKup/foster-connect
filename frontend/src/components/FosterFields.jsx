@@ -112,23 +112,36 @@ export default function FosterFields({ values, set }) {
             />
           </div>
           <div className="field">
-            <label>עיר סמוכה (מוכנים לאמן גם עבור האזור הזה)</label>
+            <label>עיר סמוכה</label>
             <input
               type="text"
               value={values.nearby_city}
               onChange={(e) => set("nearby_city", e.target.value)}
             />
+            <span className="muted" style={{ fontSize: "0.8rem" }}>
+              רלוונטי אם גרים ביישוב קטן או אזור סמוך לעיר מרכזית
+            </span>
           </div>
         </div>
       </fieldset>
 
       <fieldset>
-        <legend>מה תוכלו לאמן?</legend>
+        <legend>פרטי האומנה</legend>
         <div className="grid">
-          <Check name="can_foster_dogs" label="יכולים לאמן כלבים" values={values} set={set} />
-          <Check name="can_foster_cats" label="יכולים לאמן חתולים" values={values} set={set} />
+          <Check
+            name="can_foster_dogs"
+            label="יכולים לשמש בית אומנה לכלבים"
+            values={values}
+            set={set}
+          />
+          <Check
+            name="can_foster_cats"
+            label="יכולים לשמש בית אומנה לחתולים"
+            values={values}
+            set={set}
+          />
           <div className="field">
-            <label>משקל מקסימלי לכלב</label>
+            <label>משקל כלב מקסימלי</label>
             <select
               value={values.max_dog_weight_kg}
               onChange={(e) => set("max_dog_weight_kg", e.target.value)}
@@ -193,7 +206,7 @@ export default function FosterFields({ values, set }) {
           </div>
           <Check
             name="emergency_foster_available"
-            label="זמין/ה לאומנת חירום"
+            label="זמינים לאומנת חירום"
             values={values}
             set={set}
           />

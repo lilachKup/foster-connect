@@ -15,7 +15,7 @@ export default function Home() {
             הצטרפות כמשפחה אומנת
           </Link>
           <Link to="/register/organization" className="btn secondary">
-            רישום הארגון שלכם
+            רישום העמותה/הארגון שלכם
           </Link>
         </div>
       </section>

@@ -58,7 +58,7 @@ export default function OrgRegister() {
 
   return (
     <div>
-      <h2 className="page-title">רישום הארגון שלכם</h2>
+      <h2 className="page-title">רישום העמותה / הארגון שלכם</h2>
       <p className="muted">
         לאחר ההרשמה, מנהל המערכת יבדוק את הארגון שלכם. תוכלו לחפש משפחות
         אומנה לאחר קבלת האישור.
@@ -205,7 +205,7 @@ export default function OrgRegister() {
         </fieldset>
 
         <button className="btn" disabled={busy}>
-          {busy ? "נרשם/ת…" : "רישום הארגון"}
+          {busy ? "נרשם/ת…" : "רישום העמותה / הארגון"}
         </button>
       </form>
     </div>

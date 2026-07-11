@@ -18,13 +18,17 @@ export default function NavBar() {
       <div className="nav-links">
         {!user && (
           <>
-            <Link to="/login">כניסה</Link>
             <Link to="/register/foster">הצטרפות כמשפחה אומנת</Link>
-            <Link to="/register/organization">רישום ארגון</Link>
+            <Link to="/register/organization">רישום עמותה/ארגון</Link>
+            <Link to="/login" className="btn small">
+              כניסה
+            </Link>
           </>
         )}
         {user?.role === "foster" && <Link to="/foster">הפרופיל שלי</Link>}
-        {user?.role === "organization" && <Link to="/organization">לוח בקרה</Link>}
+        {user?.role === "organization" && (
+          <Link to="/organization">חיפוש משפחות אומנה</Link>
+        )}
         {user?.role === "admin" && <Link to="/admin">ניהול</Link>}
         {user && (
           <>

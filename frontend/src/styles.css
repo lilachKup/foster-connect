@@ -142,6 +142,10 @@ form .grid {
   min-height: 70px;
   resize: vertical;
 }
+.field input[type="email"] {
+  direction: ltr;
+  text-align: left;
+}
 .password-input {
   position: relative;
   display: flex;
@@ -212,6 +216,11 @@ legend {
 }
 .btn.danger {
   background: var(--danger);
+}
+.btn.small {
+  padding: 6px 16px;
+  font-size: 0.85rem;
+  border-radius: 6px;
 }
 .btn.warn {
   background: var(--warn);
