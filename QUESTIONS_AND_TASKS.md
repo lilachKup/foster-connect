@@ -229,3 +229,55 @@ Israeli phone number formats, or a library like `phonenumbers`) to both
 schemas.
 
 **Status:** not fixed yet — tracked for later.
+
+---
+
+## 11. Code review from a friend — 4 items to go over
+
+Someone who reviewed the code separately flagged these. Not fixed yet —
+just recording so we don't lose them.
+
+### 11a. Duplicate DB query in `require_approved_org_or_admin`
+
+**File:** [backend/app/core/deps.py:58](backend/app/core/deps.py:58)
+
+```python
+org = db.query(Organization).filter(Organization.user_id == user.id).first()
+```
+
+This fires an extra query on every search request made by an organization.
+Since `user` already has a `user.organization` relationship, that could be
+used directly instead (if the session is still open), or eager-loaded.
+
+### 11b. No pagination on list endpoints
+
+**Files:** `GET /fosters` ([backend/app/routers/fosters.py](backend/app/routers/fosters.py)),
+`GET /admin/fosters` and `GET /admin/organizations` ([backend/app/routers/admin.py](backend/app/routers/admin.py))
+
+All three return every matching row with no limit. Fine at today's scale,
+but with e.g. 10,000 fosters this would be slow and expensive. Add
+`limit`/`offset` (or cursor-based) pagination.
+
+### 11c. `AdminFosterRead` is built manually
+
+**File:** [backend/app/routers/admin.py:109-111](backend/app/routers/admin.py:109-111)
+
+```python
+data = FosterProfileRead.model_validate(profile).model_dump()
+data["account_email"] = user.email
+```
+
+Works, but fragile — hand-assembling a dict outside the type system.
+Better: a proper `model_validator` on `AdminFosterRead`, or a typed
+constructor that takes both the profile and the user object directly.
+
+### 11d. `ilike` on unindexed `nearby_city`
+
+**File:** [backend/app/routers/fosters.py:103](backend/app/routers/fosters.py:103)
+
+`ilike` with a leading `%` can't use a plain B-tree index. Not a problem at
+today's data volume, but at scale this would want a `pg_trgm` index or
+full-text search.
+
+**Status:** not fixed yet — tracked for later, none of these are urgent at
+current scale.
