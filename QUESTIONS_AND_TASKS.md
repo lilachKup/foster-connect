@@ -1,4 +1,4 @@
-# Open Questions / Follow-ups
+# Questions & Tasks
 
 Running list of things to revisit later. Not fixed yet — just tracked here so we
 don't lose them.
@@ -125,3 +125,107 @@ enum (like `AvailabilityStatus`/`ProfileStatus` in `enums.py`), so the bucket
 list is enforced server-side too, not just in the React dropdown.
 
 **Status:** not fixed yet — tracked for later, explicitly deferred for now.
+
+---
+
+## 6. Note to self: what `config.py` actually loads, and from where
+
+**File:** [backend/app/config.py](backend/app/config.py)
+
+`Settings` declares a hardcoded default for every field (e.g.
+`jwt_secret: str = "change-me-to-a-long-random-string"`, `admin_email: str =
+"admin@fosterconnect.io"`, etc.), **and** points at the real `.env` file via
+`env_file=_ENV_FILE` (anchored to `config.py`'s own location on disk — see
+item covered in chat re: the path-resolution bug).
+
+**Precedence, confirmed by direct test** (`Settings().jwt_secret` printed and
+compared against the class default):
+1. If the variable is set as a real OS environment variable → that wins.
+2. Else if it's present in `backend/.env` → that value is used.
+3. Else → falls back to the hardcoded default written in `config.py`.
+
+So yes — `JWT_SECRET` (and `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `DATABASE_URL`,
+etc.) are genuinely read from `.env` today; the hardcoded values in
+`config.py` only ever kick in if `.env` is missing/unreadable or a specific
+line is missing from it — which is exactly the failure mode from the
+`.env`-path bug (item covered separately): when that bug was live, `.env`
+silently wasn't found at all, so *every* setting quietly fell back to its
+code default at once, not just one.
+
+**Status:** ✅ confirmed/documented, not an open question.
+
+---
+
+## 7. TODO: Add rate limiting
+
+**Files:** [backend/app/routers/auth.py](backend/app/routers/auth.py) (mainly
+`/auth/login` and the register endpoints), possibly applied globally.
+
+There is currently no rate limiting anywhere in the API. `/auth/login` in
+particular has no limit on failed attempts — nothing stops repeated
+password-guessing against a known email, and registration/search endpoints
+have no throttling either.
+
+**Future improvement:** add rate limiting (e.g. per-IP and/or per-account on
+`/auth/login`, and a general limit across the API) before this goes anywhere
+beyond local development — a library like `slowapi` (FastAPI-friendly wrapper
+around `limits`) would fit without much rework.
+
+**Status:** not fixed yet — tracked for later.
+
+---
+
+## 8. TODO: Add automated tests for the forms
+
+**Files:** no test files exist anywhere in the project yet (backend or
+frontend).
+
+There's currently zero automated test coverage — every check so far in this
+project has been manual/ad-hoc (direct API calls, manual DB queries, browser
+checks). Worth having real tests around the registration and profile forms
+specifically (foster registration, organization registration, foster profile
+update), since those are the most field-heavy, validation-heavy parts of the
+app.
+
+**Future improvement:** add backend tests (e.g. `pytest` + FastAPI's
+`TestClient`/`httpx`) covering required-field validation, the "at least one
+link" org rule, password length limits, etc.; consider frontend tests
+(e.g. Vitest) for form behavior like the dirty-state save button.
+
+**Status:** not fixed yet — tracked for later.
+
+---
+
+## 9. TODO: Limit on foster full name length
+
+**File:** [backend/app/schemas/foster.py](backend/app/schemas/foster.py) —
+`full_name: str` (no `max_length`)
+
+The DB column is `String(255)` (see
+[backend/app/models/foster_profile.py](backend/app/models/foster_profile.py)),
+but the Pydantic schema doesn't enforce any length limit before that. Right
+now, a name longer than 255 characters would fail at the database level with
+a raw SQL error, not a clean validation error from the API.
+
+**Future improvement:** add `Field(max_length=255)` (matching the DB column)
+to `full_name` in `FosterProfileBase`, so it fails with a clean `422` instead
+of a DB-level error.
+
+**Status:** not fixed yet — tracked for later.
+
+---
+
+## 10. TODO: Phone number validation
+
+**Files:** [backend/app/schemas/foster.py](backend/app/schemas/foster.py)
+(`phone: str | None`), [backend/app/schemas/organization.py](backend/app/schemas/organization.py)
+(`phone: str`)
+
+Phone fields are currently plain, unvalidated strings on both foster and
+organization schemas — any text at all is accepted, no format/length check.
+
+**Future improvement:** add real phone validation (e.g. a regex for
+Israeli phone number formats, or a library like `phonenumbers`) to both
+schemas.
+
+**Status:** not fixed yet — tracked for later.
